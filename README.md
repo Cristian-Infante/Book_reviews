@@ -2,41 +2,53 @@
 
 ```mermaid
 erDiagram
-    PROVIDERS {
-        UUID Id PK
-        string Nit
-        string Name
+    User {
+        int Id PK
+        string FirstName
+        string LastName
         string Email
-    }
-    SERVICES {
-        UUID Id PK
-        string Name
-        decimal HourlyRate
-    }
-    PROVIDER_SERVICES {
-        UUID ProviderServiceId PK
-        UUID ProviderId FK
-        UUID ServiceId FK
-    }
-    PROVIDER_SERVICE_COUNTRIES {
-        UUID ProviderServiceId FK
-        string CountryIsoCode PK
-    }
-    CUSTOM_FIELDS {
-        UUID Id PK
-        UUID ProviderId FK
-        string Key
-        string Value
-    }
-    USERS {
-        UUID Id PK
-        string Username
         string PasswordHash
-        string Email
+        byte[] ProfileImage
+    }
+    Category {
+        int Id PK
+        string Name
+    }
+    Book {
+        int Id PK
+        string Title
+        string Author
+        string Summary
+        int CategoryId FK
+    }
+    Review {
+        int Id PK
+        int BookId FK
+        int UserId FK
+        int Rating
+        string Comment
+        datetime CreatedAt
+        datetime UpdatedAt
+    }
+    RefreshToken {
+        int Id PK
+        int UserId FK
+        string Token
+        datetime Created
+        datetime Expires
+        bool Revoked
+    }
+    PasswordResetToken {
+        int Id PK
+        int UserId FK
+        string Token
+        datetime ExpiresAt
+        bool Used
     }
 
-    PROVIDERS ||--o{ CUSTOM_FIELDS              : has
-    PROVIDERS ||--o{ PROVIDER_SERVICES          : offers
-    SERVICES  ||--o{ PROVIDER_SERVICES          : provided_by
-    PROVIDER_SERVICES ||--o{ PROVIDER_SERVICE_COUNTRIES : available_in
+    User ||--o{ Review                : writes
+    Book ||--o{ Review                : has
+    Category ||--o{ Book              : contains
+    User ||--o{ RefreshToken          : owns
+    User ||--o{ PasswordResetToken    : owns
 ```
