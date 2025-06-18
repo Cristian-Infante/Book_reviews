@@ -172,7 +172,7 @@ dotnet build
 dotnet run --project Presentation/Presentation.csproj
 ```
 
-Accede a **https://localhost:7074/swagger** para probar endpoints.
+Accede a **http://localhost:5219/swagger** para probar endpoints.
 
 ### Despliegue con Docker Compose
 
@@ -209,7 +209,7 @@ Accede a **https://localhost:7074/swagger** para probar endpoints.
    docker-compose up -d
    ```
 
-## 🖥️ Frontend – Next.js + TypeScript
+## Frontend – Next.js + TypeScript
 
 ### Prerrequisitos
 
