@@ -1,10 +1,9 @@
-﻿// src/app/forgot-password/page.tsx
-"use client";
+﻿"use client";
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import { API } from "@/lib/axios";
-import { FaEnvelope } from "react-icons/fa";
+import React, {useState} from "react";
+import {useRouter} from "next/navigation";
+import {API} from "@/lib/axios";
+import {FaEnvelope} from "react-icons/fa";
 
 export default function ForgotPasswordPage() {
     const router = useRouter();
@@ -17,8 +16,7 @@ export default function ForgotPasswordPage() {
         setError(null);
         setLoading(true);
         try {
-            await API.post("/Auth/forgot-password", { email });
-            // redirijo a la pantalla de reset-password
+            await API.post("/Auth/forgot-password", {email});
             router.push(`/reset-password?email=${encodeURIComponent(email)}`);
         } catch {
             setError("No se pudo procesar la solicitud. Intenta de nuevo.");
@@ -34,7 +32,7 @@ export default function ForgotPasswordPage() {
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <label className="block text-gray-700">Correo electrónico</label>
                     <div className="relative">
-                        <FaEnvelope className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                        <FaEnvelope className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"/>
                         <input
                             type="email"
                             required

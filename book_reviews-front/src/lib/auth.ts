@@ -1,5 +1,4 @@
-﻿// src/lib/auth.ts
-import { jwtDecode } from "jwt-decode";
+﻿import { jwtDecode } from "jwt-decode";
 
 export function getUserIdFromToken(): number | null {
     const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;

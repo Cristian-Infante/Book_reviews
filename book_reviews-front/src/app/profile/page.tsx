@@ -1,9 +1,9 @@
 ﻿"use client";
 
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import {API} from "@/lib/axios";
-import { useRouter } from "next/navigation";
-import { getUserIdFromToken } from "@/lib/auth";
+import {useRouter} from "next/navigation";
+import {getUserIdFromToken} from "@/lib/auth";
 
 type User = {
     id: number;
@@ -28,7 +28,7 @@ export default function ProfilePage() {
         if (!id) return;
 
         API.get<User>(`/Users/${id}`)
-            .then(({ data }) => {
+            .then(({data}) => {
                 setUser(data);
                 setFirstName(data.firstName ?? "");
                 setLastName(data.lastName ?? "");
@@ -57,7 +57,7 @@ export default function ProfilePage() {
                 const form = new FormData();
                 form.append("file", image);
                 await API.post(`/Users/${id}/photo`, form, {
-                    headers: { "Content-Type": "multipart/form-data" },
+                    headers: {"Content-Type": "multipart/form-data"},
                 });
                 setMessage("Imagen actualizada correctamente");
             } else {
@@ -97,7 +97,6 @@ export default function ProfilePage() {
                     </div>
                 )}
                 <div className="grid md:grid-cols-3 gap-0">
-                    {/* Foto */}
                     <div className="bg-gray-100 p-6 flex flex-col items-center justify-center">
                         <img
                             src={preview ?? "/default-profile.png"}
@@ -141,7 +140,6 @@ export default function ProfilePage() {
                         />
                     </div>
 
-                    {/* Datos */}
                     <div className="md:col-span-2 p-6">
                         <h1 className="text-2xl font-bold mb-6 text-gray-800">Editar perfil</h1>
 

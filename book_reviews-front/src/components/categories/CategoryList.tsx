@@ -1,26 +1,21 @@
-﻿/* -------------------------------------------------------------------------- */
-/*  src/components/categories/CategoryList.tsx                                */
-/* -------------------------------------------------------------------------- */
-"use client";
+﻿"use client";
 
-import React, { useEffect, useState } from "react";
-import { FaPlus }   from "react-icons/fa";
-import API          from "@/lib/axios";
+import React, {useEffect, useState} from "react";
+import {FaPlus} from "react-icons/fa";
+import API from "@/lib/axios";
 import CategoryCard from "./CategoryCard";
 import CategoryForm from "./CategoryForm";
 
 export type Category = { id: number; name: string };
 
-/** ✔️ eliminamos repetidos conservando el más reciente */
 const uniqById = (arr: Category[]) =>
     [...new Map(arr.map(c => [c.id, c])).values()];
 
 export default function CategoryList() {
     const [categories, setCategories] = useState<Category[]>([]);
-    const [loading,    setLoading]    = useState(true);
-    const [showNew,    setShowNew]    = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [showNew, setShowNew] = useState(false);
 
-    /* -------- carga inicial -------- */
     const load = () => {
         setLoading(true);
         API.get<Category[]>("/Categories")
@@ -33,7 +28,6 @@ export default function CategoryList() {
         load();
     };
 
-    /* -------- callbacks -------- */
     const onUpdated = () => {
         setShowNew(false);
         load();
@@ -42,7 +36,6 @@ export default function CategoryList() {
     const onDeleted = (id: number) =>
         setCategories(prev => prev.filter(x => x.id !== id));
 
-    /* -------- UI -------- */
     return (
         <div className="space-y-6">
             <button
@@ -50,7 +43,7 @@ export default function CategoryList() {
                 className="flex items-center gap-2 rounded-md bg-gray-800 px-4 py-2
                    text-white hover:bg-gray-900"
             >
-                <FaPlus /> Nueva categoría
+                <FaPlus/> Nueva categoría
             </button>
 
             {showNew && (
@@ -69,7 +62,7 @@ export default function CategoryList() {
                 <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {categories.map(cat => (
                         <CategoryCard
-                            key={cat.id ?? `tmp-${cat.name}`}   /* 🛡️ respaldo */
+                            key={cat.id ?? `tmp-${cat.name}`}
                             category={cat}
                             onUpdated={onUpdated}
                             onDeleted={onDeleted}

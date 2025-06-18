@@ -1,11 +1,8 @@
-﻿/* --------------------------------------------------------------------------
-   src/components/books/BookCard.tsx   (Refactor)
-   -------------------------------------------------------------------------- */
-"use client";
+﻿"use client";
 
 import React from "react";
 import Link from "next/link";
-import { FaBook } from "react-icons/fa";
+import {FaBook} from "react-icons/fa";
 
 export type Book = {
     id: number;
@@ -17,7 +14,7 @@ export type Book = {
     categoryName?: string;
 };
 
-export default function BookCard({ book }: { book: Book }) {
+export default function BookCard({book}: { book: Book }) {
     return (
         <Link
             href={`/books/${book.id}`}
@@ -35,7 +32,7 @@ export default function BookCard({ book }: { book: Book }) {
                     />
                 ) : (
                     <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded-md">
-                        <FaBook className="text-gray-400 text-3xl" aria-hidden />
+                        <FaBook className="text-gray-400 text-3xl" aria-hidden/>
                     </div>
                 )}
             </div>

@@ -1,9 +1,9 @@
 ﻿"use client";
 
-import React, { useState } from "react";
+import React, {useState} from "react";
 import {API} from "@/lib/axios";
-import { FaEye, FaEyeSlash, FaUserShield } from "react-icons/fa";
-import { useRouter } from "next/navigation";
+import {FaEye, FaEyeSlash, FaUserShield} from "react-icons/fa";
+import {useRouter} from "next/navigation";
 
 export default function LoginPage() {
     const router = useRouter();
@@ -18,7 +18,7 @@ export default function LoginPage() {
         setIsLoading(true);
 
         try {
-            const { data } = await API.post("/Auth/login", {
+            const {data} = await API.post("/Auth/login", {
                 email,
                 password,
             });
@@ -42,13 +42,14 @@ export default function LoginPage() {
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br  p-6">
             <div className="text-center mb-8">
-                <FaUserShield className="mx-auto text-gray-800" size={60} />
+                <FaUserShield className="mx-auto text-gray-800" size={60}/>
                 <h1 className="text-3xl md:text-4xl font-bold text-gray-900 uppercase tracking-wide mt-3">
                     Book Reviews
                 </h1>
             </div>
 
-            <div className="w-full max-w-sm md:max-w-md bg-white rounded-xl shadow-lg p-6 md:p-8 hover:shadow-2xl transition-shadow">
+            <div
+                className="w-full max-w-sm md:max-w-md bg-white rounded-xl shadow-lg p-6 md:p-8 hover:shadow-2xl transition-shadow">
                 <h2 className="text-xl md:text-2xl font-semibold mb-6 text-center text-gray-800">
                     Iniciar sesión
                 </h2>
@@ -96,7 +97,7 @@ export default function LoginPage() {
                                 onClick={() => setShowPassword(!showPassword)}
                                 className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-600"
                             >
-                                {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+                                {showPassword ? <FaEyeSlash size={20}/> : <FaEye size={20}/>}
                             </button>
                         </div>
                     </div>
@@ -109,7 +110,8 @@ export default function LoginPage() {
                         }`}
                     >
                         {isLoading ? (
-                            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                            <div
+                                className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"/>
                         ) : (
                             "Ingresar"
                         )}

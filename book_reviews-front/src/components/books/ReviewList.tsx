@@ -1,9 +1,9 @@
 ﻿"use client";
 
-import React, { useEffect, useState } from "react";
-import { API } from "@/lib/axios";
+import React, {useEffect, useState} from "react";
+import {API} from "@/lib/axios";
 import {FaStar, FaSpinner, FaPen} from "react-icons/fa";
-import { getUserIdFromToken } from "@/lib/auth";
+import {getUserIdFromToken} from "@/lib/auth";
 
 type Review = {
     id: number;
@@ -15,13 +15,12 @@ type Review = {
     createdAt: string;
 };
 
-export default function ReviewList({ bookId }: { bookId: number }) {
+export default function ReviewList({bookId}: { bookId: number }) {
     const currentUserId = getUserIdFromToken();
     const [reviews, setReviews] = useState<Review[]>([]);
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
 
-    // Para edición inline
     const [editingId, setEditingId] = useState<number | null>(null);
     const [editRating, setEditRating] = useState(0);
     const [editComment, setEditComment] = useState("");
@@ -30,7 +29,7 @@ export default function ReviewList({ bookId }: { bookId: number }) {
     const fetchReviews = async () => {
         setRefreshing(true);
         try {
-            const { data } = await API.get<{ items: Review[] }>(
+            const {data} = await API.get<{ items: Review[] }>(
                 `/Reviews/book/${bookId}`
             );
             setReviews(data.items);
@@ -50,7 +49,6 @@ export default function ReviewList({ bookId }: { bookId: number }) {
         return () => window.removeEventListener("reviews-updated", handler);
     }, [bookId]);
 
-    // Guardar cambios de edición
     const saveEdit = async (id: number) => {
         if (!editRating) return setEditError("Selecciona una calificación.");
         if (!editComment.trim()) return setEditError("Escribe un comentario.");
@@ -70,7 +68,7 @@ export default function ReviewList({ bookId }: { bookId: number }) {
         }
     };
 
-    if (loading) return <SkeletonList />;
+    if (loading) return <SkeletonList/>;
 
     if (reviews.length === 0)
         return (
@@ -86,7 +84,7 @@ export default function ReviewList({ bookId }: { bookId: number }) {
                     Reseñas de lectores
                 </h2>
                 {refreshing && (
-                    <FaSpinner className="animate-spin text-gray-500" aria-label="Cargando" />
+                    <FaSpinner className="animate-spin text-gray-500" aria-label="Cargando"/>
                 )}
             </header>
 
@@ -97,13 +95,12 @@ export default function ReviewList({ bookId }: { bookId: number }) {
                         className="rounded-lg border border-gray-200 bg-white/70 p-4 shadow-sm"
                     >
                         {editingId === r.id ? (
-                            // --- Formulario inline de edición ---
                             <div className="space-y-4">
                                 <fieldset
                                     className="flex items-center gap-1"
                                     aria-label="Calificación"
                                 >
-                                    {Array.from({ length: 5 }).map((_, i) => {
+                                    {Array.from({length: 5}).map((_, i) => {
                                         const val = i + 1;
                                         return (
                                             <label
@@ -120,7 +117,7 @@ export default function ReviewList({ bookId }: { bookId: number }) {
                                                     checked={editRating === val}
                                                     onChange={() => setEditRating(val)}
                                                 />
-                                                <FaStar />
+                                                <FaStar/>
                                             </label>
                                         );
                                     })}
@@ -159,7 +156,7 @@ export default function ReviewList({ bookId }: { bookId: number }) {
                             // --- Vista normal de reseña ---
                             <>
                                 <div className="flex items-center gap-0.5 text-yellow-500">
-                                    {Array.from({ length: 5 }).map((_, i) => (
+                                    {Array.from({length: 5}).map((_, i) => (
                                         <FaStar
                                             key={i}
                                             className={i < Math.round(r.rating) ? "" : "opacity-30"}
@@ -187,7 +184,7 @@ export default function ReviewList({ bookId }: { bookId: number }) {
                                             }}
                                             className="text-blue-600 hover:underline text-sm"
                                         >
-                                            <FaPen />
+                                            <FaPen/>
                                         </button>
                                     )}
                                 </footer>
@@ -203,7 +200,7 @@ export default function ReviewList({ bookId }: { bookId: number }) {
 function SkeletonList() {
     return (
         <ul role="list" className="space-y-4">
-            {Array.from({ length: 3 }).map((_, i) => (
+            {Array.from({length: 3}).map((_, i) => (
                 <li
                     key={i}
                     className="h-24 animate-pulse rounded-lg bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200"

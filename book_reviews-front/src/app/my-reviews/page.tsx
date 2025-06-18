@@ -1,10 +1,10 @@
 ﻿"use client";
 
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import Link from "next/link";
-import {FaStar, FaTrash, FaSignInAlt, FaSpinner, FaPen} from "react-icons/fa";
-import { API, PublicAPI } from "@/lib/axios";
-import { getUserIdFromToken } from "@/lib/auth";
+import {FaStar, FaTrash, FaSignInAlt, FaPen} from "react-icons/fa";
+import {API, PublicAPI} from "@/lib/axios";
+import {getUserIdFromToken} from "@/lib/auth";
 
 type Review = {
     id: number;
@@ -20,7 +20,6 @@ export default function MyReviewsPage() {
     const [reviews, setReviews] = useState<Review[]>([]);
     const [loading, setLoading] = useState(true);
 
-    // Para edición inline
     const [editingId, setEditingId] = useState<number | null>(null);
     const [editRating, setEditRating] = useState(0);
     const [editComment, setEditComment] = useState("");
@@ -30,7 +29,6 @@ export default function MyReviewsPage() {
         setUserId(getUserIdFromToken());
     }, []);
 
-    // Carga de reseñas y títulos
     useEffect(() => {
         if (!userId) {
             setLoading(false);
@@ -41,22 +39,21 @@ export default function MyReviewsPage() {
 
         async function fetchReviews() {
             try {
-                const { data } = await API.get<Review[]>(
+                const {data} = await API.get<Review[]>(
                     `/Reviews/user/${userId}`,
-                    { signal: ac.signal }
+                    {signal: ac.signal}
                 );
-                // Enriquecer con título si falta
                 const enriched = await Promise.all(
                     data.map(async (r) => {
                         if (r.bookTitle) return r;
                         try {
-                            const { data: book } = await PublicAPI.get(
+                            const {data: book} = await PublicAPI.get(
                                 `/Books/${r.bookId}`,
-                                { signal: ac.signal }
+                                {signal: ac.signal}
                             );
-                            return { ...r, bookTitle: book.title };
+                            return {...r, bookTitle: book.title};
                         } catch {
-                            return { ...r, bookTitle: "(Título no disponible)" };
+                            return {...r, bookTitle: "(Título no disponible)"};
                         }
                     })
                 );
@@ -97,7 +94,7 @@ export default function MyReviewsPage() {
             // Recargar localmente
             setReviews((prev) =>
                 prev.map((r) =>
-                    r.id === id ? { ...r, rating: editRating, comment: editComment } : r
+                    r.id === id ? {...r, rating: editRating, comment: editComment} : r
                 )
             );
         } catch {
@@ -105,10 +102,10 @@ export default function MyReviewsPage() {
         }
     };
 
-    if (userId === undefined) return <div className="p-6" />;
+    if (userId === undefined) return <div className="p-6"/>;
     if (userId === null)
         return (
-            <NeedLogin />
+            <NeedLogin/>
         );
     if (loading) return <p className="p-6">Cargando reseñas…</p>;
     if (reviews.length === 0)
@@ -121,10 +118,9 @@ export default function MyReviewsPage() {
                 {reviews.map((r) => (
                     <li key={r.id} className="border rounded p-4">
                         {editingId === r.id ? (
-                            // Formulario inline de edición
                             <div className="space-y-4">
                                 <fieldset className="flex items-center gap-1" aria-label="Calificación">
-                                    {Array.from({ length: 5 }).map((_, i) => {
+                                    {Array.from({length: 5}).map((_, i) => {
                                         const val = i + 1;
                                         return (
                                             <label
@@ -141,13 +137,13 @@ export default function MyReviewsPage() {
                                                     checked={editRating === val}
                                                     onChange={() => setEditRating(val)}
                                                 />
-                                                <FaStar />
+                                                <FaStar/>
                                             </label>
                                         );
                                     })}
                                     <span className="ml-2 text-sm text-gray-600">
-                    {editRating}/5
-                  </span>
+                                        {editRating}/5
+                                      </span>
                                 </fieldset>
 
                                 <textarea
@@ -177,10 +173,9 @@ export default function MyReviewsPage() {
                                 </div>
                             </div>
                         ) : (
-                            // Vista normal
                             <>
                                 <div className="flex gap-1 text-yellow-500 mb-1">
-                                    {Array.from({ length: 5 }).map((_, i) => (
+                                    {Array.from({length: 5}).map((_, i) => (
                                         <FaStar
                                             key={i}
                                             className={i < r.rating ? "" : "opacity-30"}
@@ -198,15 +193,15 @@ export default function MyReviewsPage() {
                                         {r.bookTitle}
                                     </Link>
                                     <div className="flex items-center gap-2">
-                    <span>
-                      {new Date(r.createdAt).toLocaleDateString()}
-                    </span>
+                                    <span>
+                                      {new Date(r.createdAt).toLocaleDateString()}
+                                    </span>
                                         <button
                                             onClick={() => deleteReview(r.id)}
                                             className="text-red-600 hover:text-red-800"
                                             aria-label="Eliminar reseña"
                                         >
-                                            <FaTrash />
+                                            <FaTrash/>
                                         </button>
                                         <button
                                             onClick={() => {
@@ -216,7 +211,7 @@ export default function MyReviewsPage() {
                                             }}
                                             className="text-blue-600 hover:underline"
                                         >
-                                            <FaPen />
+                                            <FaPen/>
                                         </button>
                                     </div>
                                 </footer>
@@ -240,7 +235,7 @@ function NeedLogin() {
                 href="/login"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-md bg-gray-800 text-white font-medium hover:bg-gray-900 transition-colors"
             >
-                <FaSignInAlt /> Iniciar sesión
+                <FaSignInAlt/> Iniciar sesión
             </Link>
         </section>
     );

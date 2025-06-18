@@ -1,19 +1,15 @@
-﻿/* --------------------------------------------------------------------------
-   src/components/books/AddReviewForm.tsx   (Refactor)
-   -------------------------------------------------------------------------- */
-"use client";
+﻿"use client";
 
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { FaSpinner, FaStar, FaUndo } from "react-icons/fa";
-import { API } from "@/lib/axios";
-import { getUserIdFromToken } from "@/lib/auth";
+import React, {useEffect, useState} from "react";
+import {useRouter} from "next/navigation";
+import {FaSpinner, FaStar, FaUndo} from "react-icons/fa";
+import {API} from "@/lib/axios";
+import {getUserIdFromToken} from "@/lib/auth";
 
 const MAX_CHARS = 500;
 type Props = { bookId: number };
 
-export default function AddReviewForm({ bookId }: Props) {
-    /* ───────────── Auth & state ───────────── */
+export default function AddReviewForm({bookId}: Props) {
     const [userId, setUserId] = useState<number | null>(null);
     const router = useRouter();
 
@@ -22,12 +18,10 @@ export default function AddReviewForm({ bookId }: Props) {
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
 
-    /* Cargar userId client-side */
     useEffect(() => setUserId(getUserIdFromToken()), []);
 
-    if (!userId) return null; // no mostrar si no hay sesión
+    if (!userId) return null;
 
-    /* ───────────── Handlers ───────────── */
     const reset = () => {
         setRating(0);
         setComment("");
@@ -43,7 +37,7 @@ export default function AddReviewForm({ bookId }: Props) {
         setError(null);
         setLoading(true);
         try {
-            await API.post("/Reviews", { bookId, userId, rating, comment });
+            await API.post("/Reviews", {bookId, userId, rating, comment});
             window.dispatchEvent(new Event("reviews-updated"));
             reset();
             router.refresh();
@@ -54,7 +48,6 @@ export default function AddReviewForm({ bookId }: Props) {
         }
     };
 
-    /* ───────────── UI ───────────── */
     const remaining = MAX_CHARS - comment.length;
     const overLimit = remaining < 0;
 
@@ -63,9 +56,8 @@ export default function AddReviewForm({ bookId }: Props) {
             onSubmit={submit}
             className="space-y-6 border rounded-lg p-6 bg-white shadow-sm"
         >
-            {/* Estrellas */}
             <fieldset className="flex items-center justify-center gap-1" aria-label="Calificación">
-                {Array.from({ length: 5 }).map((_, i) => {
+                {Array.from({length: 5}).map((_, i) => {
                     const val = i + 1;
                     return (
                         <label
@@ -74,7 +66,6 @@ export default function AddReviewForm({ bookId }: Props) {
                                 val <= rating ? "text-yellow-500" : "text-gray-400"
                             } transition`}
                         >
-                            {/* Radio oculto, pero accesible */}
                             <input
                                 type="radio"
                                 name="rating"
@@ -83,7 +74,7 @@ export default function AddReviewForm({ bookId }: Props) {
                                 checked={rating === val}
                                 onChange={() => setRating(val)}
                             />
-                            <FaStar className="group-hover:text-yellow-500" />
+                            <FaStar className="group-hover:text-yellow-500"/>
                         </label>
                     );
                 })}
@@ -96,34 +87,33 @@ export default function AddReviewForm({ bookId }: Props) {
             <div className="space-y-1">
                 <textarea
                     value={comment}
-                    maxLength={MAX_CHARS + 1} /* permite pasarse para marcar rojo */
+                    maxLength={MAX_CHARS + 1}
                     onChange={(e) => setComment(e.target.value)}
                     rows={4}
                     placeholder="Escribe una reseña sobre este libro..."
                     className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-gray-700 resize-none"
                 />
-            <div className="flex items-center justify-between text-xs">
+                <div className="flex items-center justify-between text-xs">
             <span
-              className={`${
-                  overLimit ? "text-red-600" : "text-gray-500"
-              } select-none`}
+                className={`${
+                    overLimit ? "text-red-600" : "text-gray-500"
+                } select-none`}
             >
                 {remaining} caracteres disponibles
             </span>
-            <button
-                type="button"
-                onClick={reset}
-                className="inline-flex items-center gap-1 text-gray-500 hover:text-gray-700"
-            >
-                <FaUndo /> Limpiar
-            </button>
+                    <button
+                        type="button"
+                        onClick={reset}
+                        className="inline-flex items-center gap-1 text-gray-500 hover:text-gray-700"
+                    >
+                        <FaUndo/> Limpiar
+                    </button>
                 </div>
                 {error?.startsWith("Escribe") && (
                     <p className="text-sm text-red-600">{error}</p>
                 )}
             </div>
 
-            {/* Actions */}
             <div className="flex justify-center">
                 <button
                     disabled={loading || overLimit}
@@ -131,13 +121,12 @@ export default function AddReviewForm({ bookId }: Props) {
                      hover:bg-gray-900 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-gray-700"
                 >
                     {loading && (
-                        <FaSpinner className="animate-spin" aria-label="Cargando" />
+                        <FaSpinner className="animate-spin" aria-label="Cargando"/>
                     )}
                     Publicar reseña
                 </button>
             </div>
 
-            {/* Error genérico */}
             {error && !error.startsWith("Selecciona") && !error.startsWith("Escribe") && (
                 <p className="text-center text-red-600 text-sm">{error}</p>
             )}

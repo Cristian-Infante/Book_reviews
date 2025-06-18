@@ -1,25 +1,21 @@
-﻿/* --------------------------------------------------------------------------
-   src/components/categories/CategoryCard.tsx          (UI polished)
-   -------------------------------------------------------------------------- */
-"use client";
+﻿"use client";
 
-import React, { useState } from "react";
-import { FaTrash, FaPen, FaSpinner } from "react-icons/fa";
-import API           from "@/lib/axios";
-import { Category }  from "./CategoryList";
-import CategoryForm  from "./CategoryForm";
+import React, {useState} from "react";
+import {FaTrash, FaPen, FaSpinner} from "react-icons/fa";
+import API from "@/lib/axios";
+import {Category} from "./CategoryList";
+import CategoryForm from "./CategoryForm";
 
 type Props = {
-    category : Category;
+    category: Category;
     onUpdated: (c: Category) => void;
     onDeleted: (id: number) => void;
 };
 
-export default function CategoryCard({ category, onUpdated, onDeleted }: Props) {
-    const [editing,  setEditing] = useState(false);
+export default function CategoryCard({category, onUpdated, onDeleted}: Props) {
+    const [editing, setEditing] = useState(false);
     const [deleting, setDeleting] = useState(false);
 
-    /* ───────────── Eliminar ───────────── */
     const handleDelete = async () => {
         const ok = confirm(`¿Eliminar la categoría “${category.name}”?`);
         if (!ok) return;
@@ -33,40 +29,37 @@ export default function CategoryCard({ category, onUpdated, onDeleted }: Props) 
         }
     };
 
-    /* ───────────── Edición en línea ───────────── */
     if (editing) {
         return (
             <CategoryForm
                 initial={category}
-                onSuccess={c => { onUpdated(c); setEditing(false); }}
+                onSuccess={c => {
+                    onUpdated(c);
+                    setEditing(false);
+                }}
                 onCancel={() => setEditing(false)}
             />
         );
     }
 
-    /* ───────────── Card normal ───────────── */
     return (
         <div
             className="group relative flex items-center justify-between rounded-lg border
                  border-gray-200 bg-white px-4 py-3 shadow-sm transition
                  hover:shadow-md"
         >
-            {/* Nombre */}
             <span className="font-medium text-gray-800">{category.name}</span>
 
-            {/* Acciones */}
             <div className="flex gap-2">
-                {/* Editar */}
                 <IconButton
                     title="Editar"
                     ariaLabel="Editar categoría"
                     onClick={() => setEditing(true)}
                     className="text-blue-600 hover:bg-blue-50 hover:text-blue-700"
                 >
-                    <FaPen />
+                    <FaPen/>
                 </IconButton>
 
-                {/* Eliminar */}
                 <IconButton
                     title="Eliminar"
                     ariaLabel="Eliminar categoría"
@@ -75,9 +68,9 @@ export default function CategoryCard({ category, onUpdated, onDeleted }: Props) 
                     className="text-red-600 hover:bg-red-50 hover:text-red-700 disabled:opacity-50"
                 >
                     {deleting ? (
-                        <FaSpinner className="animate-spin" />
+                        <FaSpinner className="animate-spin"/>
                     ) : (
-                        <FaTrash />
+                        <FaTrash/>
                     )}
                 </IconButton>
             </div>
@@ -85,7 +78,6 @@ export default function CategoryCard({ category, onUpdated, onDeleted }: Props) 
     );
 }
 
-/* ───────────── Botón con icono reutilizable ───────────── */
 function IconButton({
                         children,
                         title,

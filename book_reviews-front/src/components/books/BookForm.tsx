@@ -1,18 +1,12 @@
-﻿/* --------------------------------------------------------------------------
-   src/components/books/BookForm.tsx   (Refactor UI)
-   -------------------------------------------------------------------------- */
-"use client";
+﻿"use client";
 
-import React, { useState, useEffect } from "react";
-import { API }       from "@/lib/axios";
-import { useRouter } from "next/navigation";
-import type { Book } from "./BookCard";
+import React, {useState, useEffect} from "react";
+import {API} from "@/lib/axios";
+import {useRouter} from "next/navigation";
+import type {Book} from "./BookCard";
 
 type Props = { initial?: Book };
 
-// ────────────────────────────────────────────────────────────────
-//  🔖 Campos reutilizables
-// ────────────────────────────────────────────────────────────────
 function InputField({
                         label,
                         value,
@@ -44,6 +38,7 @@ function InputField({
 }
 
 type Cat = { id: number; name: string };
+
 function CategorySelect({
                             value,
                             onChange,
@@ -74,13 +69,9 @@ function CategorySelect({
     );
 }
 
-// ────────────────────────────────────────────────────────────────
-//  🌟  Componente principal
-// ────────────────────────────────────────────────────────────────
-export default function BookForm({ initial }: Props) {
+export default function BookForm({initial}: Props) {
     const router = useRouter();
 
-    // estado
     const [title, setTitle] = useState(initial?.title ?? "");
     const [author, setAuthor] = useState(initial?.author ?? "");
     const [summary, setSummary] = useState(initial?.summary ?? "");
@@ -89,26 +80,23 @@ export default function BookForm({ initial }: Props) {
     );
     const [saving, setSaving] = useState(false);
 
-    // errores de validación por campo
     const [errors, setErrors] = useState<{ title?: string; author?: string }>({});
 
-    // envío
-    // envío
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         const newErrors: typeof errors = {};
-        if (!title.trim())  newErrors.title  = "El título es obligatorio";
+        if (!title.trim()) newErrors.title = "El título es obligatorio";
         if (!author.trim()) newErrors.author = "El autor es obligatorio";
         setErrors(newErrors);
         if (Object.keys(newErrors).length) return;
 
         setSaving(true);
         try {
-            const payload = { title, author, summary, categoryId: categoryId || null };
+            const payload = {title, author, summary, categoryId: categoryId || null};
 
             if (initial) {
-                await API.put(`/Books/${initial.id}`, { id: initial.id, ...payload });
+                await API.put(`/Books/${initial.id}`, {id: initial.id, ...payload});
             } else {
                 await API.post("/Books", payload);
             }
@@ -147,7 +135,7 @@ export default function BookForm({ initial }: Props) {
 
             <div className="space-y-1">
                 <label className="text-sm font-medium text-gray-700">Categoría</label>
-                <CategorySelect value={categoryId} onChange={setCategoryId} />
+                <CategorySelect value={categoryId} onChange={setCategoryId}/>
             </div>
 
             <div className="space-y-1">

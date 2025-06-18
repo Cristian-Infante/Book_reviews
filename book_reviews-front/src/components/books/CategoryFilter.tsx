@@ -3,9 +3,9 @@
    -------------------------------------------------------------------------- */
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { API } from "@/lib/axios";
-import { FaSpinner } from "react-icons/fa";
+import React, {useEffect, useState} from "react";
+import {API} from "@/lib/axios";
+import {FaSpinner} from "react-icons/fa";
 
 type Category = { id: number; name: string };
 
@@ -16,26 +16,22 @@ export default function CategoryFilter({
     value: number | null;
     onChange: (v: number | null) => void;
 }) {
-    /* ───────────── state ───────────── */
-    const [cats,    setCats]    = useState<Category[]>([]);
+    const [cats, setCats] = useState<Category[]>([]);
     const [loading, setLoading] = useState(true);
-    const [error,   setError]   = useState<string | null>(null);
+    const [error, setError] = useState<string | null>(null);
 
-    /* ───────────── fetch ───────────── */
     useEffect(() => {
         API.get<Category[]>("/Categories")
-            .then(({ data }) =>
+            .then(({data}) =>
                 setCats(data.sort((a, b) => a.name.localeCompare(b.name))))
-            .catch(()  => setError("No se pudo cargar"))
+            .catch(() => setError("No se pudo cargar"))
             .finally(() => setLoading(false));
     }, []);
 
-    /* Si la categoría seleccionada se elimina en el servidor */
     useEffect(() => {
         if (value && !cats.some(c => c.id === value)) onChange(null);
-    }, [cats]);      // eslint-disable-line react-hooks/exhaustive-deps
+    }, [cats]);
 
-    /* ───────────── UI ───────────── */
     return (
         <div className="relative w-full sm:w-auto">
             <select
@@ -57,12 +53,10 @@ export default function CategoryFilter({
                 ))}
             </select>
 
-            {/* Spinner à la derecha dentro del select */}
             {loading && (
-                <FaSpinner className="absolute right-3 top-1/2 -translate-y-1/2 animate-spin text-gray-500" />
+                <FaSpinner className="absolute right-3 top-1/2 -translate-y-1/2 animate-spin text-gray-500"/>
             )}
 
-            {/* Error message */}
             {error && (
                 <p className="mt-1 text-xs text-red-600">
                     {error}. <button onClick={() => location.reload()}>Reintentar</button>

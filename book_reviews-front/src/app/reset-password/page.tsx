@@ -1,10 +1,9 @@
-﻿// src/app/reset-password/page.tsx
-"use client";
+﻿"use client";
 
-import React, { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { API } from "@/lib/axios";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import React, {useState, useEffect} from "react";
+import {useRouter, useSearchParams} from "next/navigation";
+import {API} from "@/lib/axios";
+import {FaEye, FaEyeSlash} from "react-icons/fa";
 
 export default function ResetPasswordPage() {
     const router = useRouter();
@@ -23,7 +22,6 @@ export default function ResetPasswordPage() {
     const [resending, setResending] = useState(false);
     const [resendMsg, setResendMsg] = useState<string | null>(null);
 
-    // Cuenta regresiva para habilitar reenvío
     const [countdown, setCountdown] = useState(30);
     useEffect(() => {
         if (countdown <= 0) return;
@@ -60,7 +58,7 @@ export default function ResetPasswordPage() {
         setResending(true);
         setResendMsg(null);
         try {
-            await API.post("/Auth/forgot-password", { email });
+            await API.post("/Auth/forgot-password", {email});
             setResendMsg("Código reenviado. Revisa tu bandeja de entrada.");
             setCountdown(30); // reinicia la cuenta atrás
         } catch {
@@ -105,7 +103,6 @@ export default function ResetPasswordPage() {
                         />
                     </div>
 
-                    {/* Nueva contraseña */}
                     <div>
                         <label htmlFor="password" className="block text-gray-700 mb-1">
                             Nueva contraseña
@@ -127,12 +124,11 @@ export default function ResetPasswordPage() {
                                 className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
                                 aria-label={showPwd ? "Ocultar contraseña" : "Mostrar contraseña"}
                             >
-                                {showPwd ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+                                {showPwd ? <FaEyeSlash size={20}/> : <FaEye size={20}/>}
                             </button>
                         </div>
                     </div>
 
-                    {/* Confirmar contraseña */}
                     <div>
                         <label htmlFor="confirm" className="block text-gray-700 mb-1">
                             Confirmar contraseña
@@ -154,7 +150,7 @@ export default function ResetPasswordPage() {
                                 className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
                                 aria-label={showConfirm ? "Ocultar contraseña" : "Mostrar contraseña"}
                             >
-                                {showConfirm ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+                                {showConfirm ? <FaEyeSlash size={20}/> : <FaEye size={20}/>}
                             </button>
                         </div>
                     </div>
@@ -172,7 +168,6 @@ export default function ResetPasswordPage() {
                     </button>
                 </form>
 
-                {/* Reenviar código con cuenta regresiva */}
                 <div className="mt-4 text-center">
                     <button
                         onClick={handleResend}

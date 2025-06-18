@@ -1,36 +1,29 @@
-﻿/* --------------------------------------------------------------------------
-   src/components/books/SearchBar.tsx            (Refactor UI)
-   -------------------------------------------------------------------------- */
-"use client";
+﻿"use client";
 
-import React, { useId } from "react";
-import { FaSearch, FaTimes } from "react-icons/fa";
+import React, {useId} from "react";
+import {FaSearch, FaTimes} from "react-icons/fa";
 
 type Props = {
     value: string;
     onChange: (v: string) => void;
-    /** opcional — aparecerá un botón “✕” para limpiar el campo */
     onClear?: () => void;
 };
 
-export default function SearchBar({ value, onChange, onClear }: Props) {
+export default function SearchBar({value, onChange, onClear}: Props) {
     const inputId = useId();
     const showClear = value.length > 0 && onClear;
 
     return (
         <div className="relative w-full sm:w-auto">
-            {/* Etiqueta accesible oculta */}
             <label htmlFor={inputId} className="sr-only">
                 Buscar libro
             </label>
 
-            {/* 🔍 Ícono search fijo a la izquierda */}
             <FaSearch
                 className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
                 aria-hidden
             />
 
-            {/* Campo de búsqueda */}
             <input
                 id={inputId}
                 type="search"
@@ -51,7 +44,7 @@ export default function SearchBar({ value, onChange, onClear }: Props) {
                      hover:text-gray-600 focus:outline-none"
                     aria-label="Limpiar búsqueda"
                 >
-                    <FaTimes />
+                    <FaTimes/>
                 </button>
             )}
         </div>
