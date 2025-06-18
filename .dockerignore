@@ -1,0 +1,8 @@
+**/bin/
+**/obj/
+**/*.user
+**/*.DotSettings*
+.git
+.vscode
+.env
+README.md
