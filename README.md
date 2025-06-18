@@ -30,14 +30,6 @@ erDiagram
         datetime CreatedAt
         datetime UpdatedAt
     }
-    RefreshToken {
-        int Id PK
-        int UserId FK
-        string Token
-        datetime Created
-        datetime Expires
-        bool Revoked
-    }
     PasswordResetToken {
         int Id PK
         int UserId FK
@@ -49,6 +41,5 @@ erDiagram
     User ||--o{ Review                : writes
     Book ||--o{ Review                : has
     Category ||--o{ Book              : contains
-    User ||--o{ RefreshToken          : owns
     User ||--o{ PasswordResetToken    : owns
 ```
